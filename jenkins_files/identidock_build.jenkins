@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo " ============== run unit tests =================="
                 dir ('.') {
-                	sh 'docker run -e "ENV=UNIT" localhost:5000/identidock:latest'
+                	sh 'docker run --name identidock -e "ENV=UNIT" localhost:5000/identidock:latest'
                 }
             }
         }
@@ -31,6 +31,12 @@ pipeline {
             steps {
                 echo " ============== start pushing image =================="
                 sh 'docker push localhost:5000/identidock:latest'
+            }
+        }
+        stage("container remove and image prune") {
+            steps {
+                echo " ============== container remove and image prune =================="
+                sh 'docker rm $(docker stop identidock) && docker rmi localhost:5000/identidock:latest'
             }
         }
     }
