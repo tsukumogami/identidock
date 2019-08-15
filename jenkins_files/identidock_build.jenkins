@@ -1,0 +1,37 @@
+#!groovy
+// Run docker build
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+        label 'master'
+        }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage("create docker image") {
+            steps {
+                echo " ============== start building image =================="
+                dir ('.') {
+                	sh 'docker build -t localhost:5000/identidock:latest . '
+                }
+            }
+        }
+        stage("run unit tests") {
+            steps {
+                echo " ============== run unit tests =================="
+                dir ('.') {
+                	sh 'docker run -e "ENV=UNIT" localhost:5000/identidock:latest'
+                }
+            }
+        }
+        stage("docker push") {
+            steps {
+                echo " ============== start pushing image =================="
+                sh 'docker push localhost:5000/identidock:latest'
+            }
+        }
+    }
+}
