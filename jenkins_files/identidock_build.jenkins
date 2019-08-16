@@ -46,7 +46,7 @@ pipeline {
                       color: 'good',
                       message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
         }
-        success {
+        failure {
             slackSend channel: '#jenkins_builds',
                       color: 'bad',
                       message: "The pipeline ${currentBuild.fullDisplayName} has failed."
