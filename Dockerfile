@@ -1,6 +1,6 @@
 FROM python:3.7
 
-MAINTAINER tsukumogami1
+MAINTAINER tsukumogami
 ENV P_APP 9090
 ENV P_STATS 9191
 
