@@ -40,4 +40,16 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            slackSend channel: '#jenkins_builds',
+                      color: 'good',
+                      message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+        }
+        success {
+            slackSend channel: '#jenkins_builds',
+                      color: 'bad',
+                      message: "The pipeline ${currentBuild.fullDisplayName} has failed."
+        }
+    }
 }
